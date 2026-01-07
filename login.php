@@ -3,6 +3,7 @@ session_start();
 include "db.php";
 
 if (isset($_POST['login'])) {
+<<<<<<< HEAD
     $sid = $_POST['student_id'];
     $pass = $_POST['password'];
 
@@ -30,19 +31,47 @@ if (isset($_POST['login'])) {
         }
     } else {
         $error = "Student ID not found!";
+=======
+    $student_id = $_POST['student_id'];
+    $password = $_POST['password'];
+
+    $stmt = $conn->prepare("SELECT password FROM students WHERE student_id=?");
+    $stmt->bind_param("s", $student_id);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows == 1) {
+        $stmt->bind_result($storedhash);
+        $stmt->fetch();
+
+        if (password_verify($password, $storedhash)) {
+            $_SESSION['logged_in'] = true;
+            header("Location: dashboard.php");
+        } else {
+            echo "Wrong Password";
+        }
+    } else {
+        echo "Student Not Found";
+>>>>>>> 053436806ac42e819894653d82779f49a72f7c6f
     }
 }
 ?>
 
+<<<<<<< HEAD
 <h2>Login</h2>
 
 <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
 
+=======
+>>>>>>> 053436806ac42e819894653d82779f49a72f7c6f
 <form method="POST">
     Student ID: <input type="text" name="student_id" required><br><br>
     Password: <input type="password" name="password" required><br><br>
     <button name="login">Login</button>
 </form>
+<<<<<<< HEAD
 
 <br>
 <a href="register.php">Create account</a>
+=======
+>>>>>>> 053436806ac42e819894653d82779f49a72f7c6f
